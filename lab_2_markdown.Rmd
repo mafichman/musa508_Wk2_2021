@@ -1,0 +1,134 @@
+---
+title: "Sample Markdown - Lab 2"
+author: "Michael Fichman"
+date: "September 17, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidycensus)
+library(sf)
+library(kableExtra)
+library(knitr)
+library(rmarkdown)
+
+options(scipen=999)
+options(tigris_class = "sf")
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Load your styling options
+
+Let's build the pieces we need to do data visualization.
+
+Add your styling options and your functions for making maps!
+
+```{r my_styles}
+mapTheme <- function(base_size = 12) {
+  theme(
+    text = element_text( color = "black"),
+    plot.title = element_text(size = 16,colour = "black"),
+    plot.subtitle=element_text(face="italic"),
+    plot.caption=element_text(hjust=0),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, size=2),
+    strip.text.x = element_text(size = 14))
+}
+
+plotTheme <- function(base_size = 12) {
+  theme(
+    text = element_text( color = "black"),
+    plot.title = element_text(size = 16,colour = "black"),
+    plot.subtitle = element_text(face="italic"),
+    plot.caption = element_text(hjust=0),
+    axis.ticks = element_blank(),
+    panel.background = element_blank(),
+    panel.grid.major = element_line("grey80", size = 0.1),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, size=2),
+    strip.background = element_rect(fill = "grey80", color = "white"),
+    strip.text = element_text(size=12),
+    axis.title = element_text(size=12),
+    axis.text = element_text(size=10),
+    plot.background = element_blank(),
+    legend.background = element_blank(),
+    legend.title = element_text(colour = "black", face = "italic"),
+    legend.text = element_text(colour = "black", face = "italic"),
+    strip.text.x = element_text(size = 14)
+  )
+}
+```
+
+## Load your workspace from today's exercise
+
+For our homeworks, you will often be putting your entire code routine into a markdown and building the data sets you use for your markdown in the Global Environment, but you can also do load a "workspace" with some finished analysis that is ready for visualization.
+
+Save your workspace from the exercise "lab_2_2009ACS.R" at the end of the code base. and then load it in the following chunk:
+
+```{r load_workspace}
+load("YOUR FILEPATH.RData")
+```
+
+Run the chunk using the triangle button on the chunk above in the RMD to see if it works correctly and populates your environment with relevant data. If this causes you an issue, you can go find the workspace that you saved and load it using the Session dropdown menu and see what is output in your console window.
+
+## Kable tables
+
+We can make some rather pleasant versions of `kable` tables in markdown, like the one in our exercise.
+
+```{r kable_example}
+allTracts.Summary %>%
+  unite(year.TOD, year, TOD, sep = ": ", remove = T) %>%
+  gather(Variable, Value, -year.TOD) %>%
+  mutate(Value = round(Value, 2)) %>%
+  spread(year.TOD, Value) %>%
+  kable() %>%
+  kable_styling() %>%
+  footnote(general_title = "\n",
+           general = "Table 2.3")
+```
+
+## Including Plots
+
+Here are two chunks with code representing the map and chart alluded to at the conclusion of the lab exercise. See if you can get these to run and then "knit" into an HTML markdown.
+
+```{r allTracts_map}
+ggplot(allTracts.threeMarkets)+
+  geom_sf(data = st_union(tracts09))+
+  geom_sf(aes(fill = Submarket))+
+  scale_fill_manual(values = c("orange", "green", "blue", "black"))+
+  labs(title = "Three Submarkets As Tracts") +
+  mapTheme()
+```
+
+```{r submarkets_facet, message=FALSE, warning=FALSE}
+st_drop_geometry(allTracts.threeMarkets) %>%
+  group_by(year, Submarket) %>%
+  summarize(Rent = mean(MedRent, na.rm = T),
+            Population = mean(TotalPop, na.rm = T),
+            Percent_White = mean(pctWhite, na.rm = T),
+            Percent_Bach = mean(pctBachelors, na.rm = T),
+            Percent_Poverty = mean(pctPoverty, na.rm = T)) %>%
+  gather(Variable, Value, -year, -Submarket) %>%
+  ggplot(aes(year, Value, fill = Submarket)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~Variable, scales = "free", ncol=5) +
+  scale_fill_manual(values = c("orange", "green", "blue", "black"))+
+  labs(title = "Indicator differences across submarkets") +
+  plotTheme() + theme(legend.position="bottom")
+```

@@ -82,7 +82,7 @@ palette5 <- c("#f0f9e8","#bae4bc","#7bccc4","#43a2ca","#0868ac")
 
 # Load census API key
 
-census_api_key("e79f3706b6d61249968c6ce88794f6f556e5bf3d", overwrite = TRUE)
+census_api_key("YOUR API KEY GOES HERE", overwrite = TRUE)
 
 # ---- Year 2009 tracts -----
 
@@ -413,4 +413,6 @@ allTracts.threeMarkets <-
   mutate(Submarket = replace_na(Submarket, "Non-TOD")) %>%
   st_sf() 
 
-# If any time is reamining, commence work on homework assignment
+# If any time is reamining, save your workspace...
+# check out a few next steps in the markdown template provided
+# in the repo, and then commence work on homework assignment
