@@ -248,7 +248,9 @@ ggplot() +
 # Both a buffer for each stop, and a union of the buffers...
 # and bind these objects together
 
-# Let's do this in pieces to understand this hefty code chunk
+# Let's do this in pieces to understand this hefty code chunk 
+
+# We put them in the same data frame... why?
 
 septaBuffers <- 
   rbind(
@@ -292,6 +294,9 @@ selection <-
 
 # Do a centroid-in-polygon join to see which tracts have their centroid in the buffer
 # Note the st_centroid call creating centroids for each feature
+
+# Let's go through this in pieces to understand what's happening here
+
 selectCentroids <-
   st_centroid(tracts09)[buffer,] %>%
   st_drop_geometry() %>%
