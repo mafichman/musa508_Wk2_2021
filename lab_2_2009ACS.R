@@ -414,5 +414,4 @@ allTracts.threeMarkets <-
   mutate(Submarket = replace_na(Submarket, "Non-TOD")) %>%
   st_sf() 
 
-# If any time is reamining, save your workspace... and check out a few next steps in the markdown template provided
-# in the repo, and then commence work on homework assignment
+# If any time is reamining,  commence work on homework assignment
