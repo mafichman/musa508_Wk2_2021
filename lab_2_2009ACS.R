@@ -172,7 +172,7 @@ tracts09 <-
          MedRent = B25058_001,
          TotalPoverty = B06012_002)
 
-st_drop_geometry(tracts09)[1:3,]
+glimpse(tracts09)
 
 # Let's create new rate variables using mutate
 
@@ -247,6 +247,8 @@ ggplot() +
 # Create buffers (in feet - note the CRS) around Septa stops -
 # Both a buffer for each stop, and a union of the buffers...
 # and bind these objects together
+
+# Let's do this in pieces to understand this hefty code chunk
 
 septaBuffers <- 
   rbind(
