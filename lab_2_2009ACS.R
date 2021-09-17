@@ -126,6 +126,8 @@ glimpse(totalPop09)
 
 # Each plot adds more and more nuance and information
 
+# Examine each to see what we've added each time
+
 # Consult the text to understand the symbology schemes
 
 A <- 
