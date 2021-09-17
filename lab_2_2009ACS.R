@@ -300,7 +300,7 @@ selection <-
 selectCentroids <-
   st_centroid(tracts09)[buffer,] %>%
   st_drop_geometry() %>%
-  left_join(dplyr::select(tracts09, GEOID)) %>%
+  left_join(., dplyr::select(tracts09, GEOID)) %>%
   st_sf() %>%
   dplyr::select(TotalPop) %>%
   mutate(Selection_Type = "Select by Centroids")
@@ -352,6 +352,8 @@ kable(allTracts.Summary) %>%
 
 # Let's make some comparisons and speculate about the willingness to pay
 # and demographics in these areas 2009-2017 (see the 2000 data in the text too)
+
+# Notice how we pipe the kable() command here
 
 allTracts.Summary %>%
   unite(year.TOD, year, TOD, sep = ": ", remove = T) %>%
@@ -412,6 +414,5 @@ allTracts.threeMarkets <-
   mutate(Submarket = replace_na(Submarket, "Non-TOD")) %>%
   st_sf() 
 
-# If any time is reamining, save your workspace...
-# check out a few next steps in the markdown template provided
+# If any time is reamining, save your workspace... and check out a few next steps in the markdown template provided
 # in the repo, and then commence work on homework assignment
