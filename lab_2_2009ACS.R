@@ -104,11 +104,7 @@ tracts09 <-
 # Referencing the data by matrix notation, and learning about the data...
 # Let's examine each variable and the elements of an sf object
 
-tracts09[1:3,]
-
-# Look at a table of variables
-
-table(tracts09$variable)
+glimpse(tracts09)
 
 # We create a new data frame consisting only of population
 
