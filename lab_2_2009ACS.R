@@ -122,12 +122,6 @@ head(totalPop09)
 
 glimpse(totalPop09)
 
-# Use the base R plotting function to examine it visually
-
-plot(totalPop09)
-
-plot(totalPop09[,5])
-
 # ---- Using ggplot to visualize census data with sf -----
 
 # Each plot adds more and more nuance and information
